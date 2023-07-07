@@ -1,5 +1,7 @@
-# 🎓Undergraduate Applied Informatics Computer Science and Technology ( UniversityOfMacedonia )
+#About me
+🎓Undergraduate Applied Informatics Computer Science and Technology ( UniversityOfMacedonia )
 
-Στο συγκεκριμένο αποθετήριο θα βρείτε προγράμματα και προσωπικά projects τα οποία έχω δημιουργήσει.
+#About This Repocitory
+In this repository you will find programs and personal projects that I have created in Python.
 
 
