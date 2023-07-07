@@ -1,5 +1,5 @@
+#Το Παρακάτω πρόγραμμα είναι η υλοποίηση ενός ChatBox στην Python
 
-//Το Παρακάτω πρόγραμμα είναι η υλοποίηση ενός ChatBox στην Python
 import re
 import random
 
