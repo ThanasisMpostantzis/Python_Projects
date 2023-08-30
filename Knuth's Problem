@@ -1,0 +1,162 @@
+from decimal import Decimal, getcontext
+import queue
+import math
+import time
+
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.parent = None
+        self.children = []
+        self.calculation = ""
+        self.depth = 0
+
+    def add_children(self, value_bd):
+        getcontext().prec = 12  # Ορίζουμε την ακρίβεια για τους υπολογισμούς Decimal
+    
+        if isinstance(value_bd, Decimal):
+            new_root_child = Node(value_bd.sqrt())
+            new_root_child.parent = self
+            new_root_child.calculation = "root"
+            new_root_child.depth = self.depth + 1
+
+            value_bi = int(value_bd)
+            int_value = int(value_bd)
+
+            if int_value < 300000:
+               subtracted_value = value_bd - Decimal(value_bi)
+               constant = Decimal('0.00000001')
+
+            if subtracted_value < constant:
+                
+                fact_bi = self.factorial(int_value)
+                fact_bd = Decimal(fact_bi)
+                new_factorial_child = Node(fact_bd)
+                self.children.append(new_factorial_child)
+                new_factorial_child.parent = self
+                new_factorial_child.calculation = "factorial"
+                new_factorial_child.depth = self.depth + 1
+
+            new_floor_child = Node(int(value_bi))
+            new_floor_child.parent = self
+            new_floor_child.calculation = "floor"
+            new_floor_child.depth = self.depth + 1
+
+            self.children.append(new_root_child)
+            self.children.append(new_floor_child)
+
+
+    def factorial(self, num):
+        factorial = 1
+        for i in range(1, num + 1):
+            factorial *= i
+        return factorial
+
+    def clear_children(self):
+        self.children = []
+
+def breadth_first_search(num1, root):
+    starting_time = time.time()
+    num = Decimal(num1)
+    waiting_queue = queue.Queue()
+    waiting_queue.put(root)
+
+    while not waiting_queue.empty():
+        curr_node = waiting_queue.get()
+        curr_node.add_children(curr_node.value)
+
+        if curr_node.value == num:
+            print("Τέλος Αναζήτησης!")
+            elapsed_time = time.time() - starting_time
+            print(f"Χρόνος αναζήτησης: {elapsed_time} seconds")
+            print(f"Βάθος: {curr_node.depth}")
+            return curr_node
+        else:
+            for child in curr_node.children:
+                waiting_queue.put(child)
+
+    return None
+
+def iterative_deepening_search(num, root, max_depth):
+    found_node = None
+    for depth in range(max_depth + 1):
+        root.clear_children()
+        found_node = depth_limited_search(root, num, depth)
+        if found_node is not None:
+            return found_node
+    return None
+
+def depth_limited_search(node, num2, max_depth):
+    start_time = time.time()
+    num = Decimal(num2)
+    stack = [node]
+
+    while stack:
+        curr_node = stack.pop()
+        curr_node.add_children(curr_node.value)
+
+        if curr_node.value == num:
+            print("Τέλος Αναζήτησης!")
+            elapsed_time = time.time() - start_time
+            print(f"Χρόνος αναζήτησης: {elapsed_time} seconds")
+            print(f"Βάθος: {curr_node.depth}")
+            return curr_node
+
+        if curr_node.depth < max_depth:
+            stack.extend(curr_node.children)
+
+    return None
+
+def main():
+    choosen_algo = 0
+    num = 0
+    calculations_list = []
+    root = Node(4)
+    root.depth = 0
+
+    print("Επιλέξε ποιον αλγόριθμο θέλεις να χρησιμοποιήσεις για την αναζήτηση:")
+    print("Αλγόρθμος αναζήτησης 1: Πρώτα σε πλάτος")
+    print("Αλγόριθμος αναζήτησης 2: Επαναληπτική εκβάθυνση")
+    choosen_algo = int(input())
+
+    while True:
+        if choosen_algo != 1 and choosen_algo != 2:
+            print("Μόνο 2 αλγόριθμοι είναι διαθέσιμοι. Επίλεξε 1 ή 2")
+            choosen_algo = int(input())
+        elif choosen_algo == 1 or choosen_algo == 2:
+            break
+
+    print("Τύπωσε τον αριθμό που θέλεις να παραχθεί:")
+    num = int(input())
+
+    if choosen_algo == 1:
+        found_node = breadth_first_search(num, root)
+
+        if found_node is not None:
+            while found_node.parent is not None:
+                calculations_list.append(found_node.calculation)
+                found_node = found_node.parent
+            calculations_list.reverse()
+            for calc in calculations_list:
+                print(calc)
+        else:
+            print("Δεν βρέθηκε αποτέλεσμα")
+
+    elif choosen_algo == 2:
+        print("Τύπωσε το μέγιστο βάθος αναζήτησης.")
+        max_depth = int(input())
+        found_node = iterative_deepening_search(num, root, max_depth)
+
+        if found_node is not None:
+            while found_node.parent is not None:
+                calculations_list.append(found_node.calculation)
+                found_node = found_node.parent
+            calculations_list.reverse()
+            for calc in calculations_list:
+                print(calc)
+        else:
+            print("Δεν βρέθηκε αποτέλεσμα")
+
+if __name__ == "__main__":
+    import time
+    main()
