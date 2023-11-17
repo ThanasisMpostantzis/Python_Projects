@@ -1,5 +1,6 @@
 import requests
 
+
 baseurl = "https://hr.apografi.gov.gr/api/public/"
 
 un1 = 'ΑΡΙΣΤΟΤΕΛΕΙΟ ΠΑΝΕΠΙΣΤΗΜΙΟ ΘΕΣ/ΝΙΚΗΣ'
