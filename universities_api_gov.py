@@ -106,8 +106,8 @@ def get_departments(orgcode):
     for i in range(len(data['data'])):
         if 'jobDescriptionVersion' in data['data'][i]:
             version = str(data['data'][i]['jobDescriptionVersion'])
-            if version[:10] in departments_count:
-                departments_count[version[:10]] += 1
+            if version[:20] in departments_count:
+                departments_count[version[:20]] += 1
 
     return departments_count
 
