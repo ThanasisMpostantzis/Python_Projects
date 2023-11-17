@@ -1,6 +1,5 @@
 import requests
 
-
 baseurl = "https://hr.apografi.gov.gr/api/public/"
 
 un1 = 'ΑΡΙΣΤΟΤΕΛΕΙΟ ΠΑΝΕΠΙΣΤΗΜΙΟ ΘΕΣ/ΝΙΚΗΣ'
@@ -100,7 +99,9 @@ def get_educationType_num(orgcode):
 def get_departments(orgcode):
     endpoint = "positions?organizationCode=" + str(orgcode)
     data = main_request(baseurl, endpoint)
-    departments_count = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0, '9': 0, '10': 0, '11': 0}
+    departments_count = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0,
+                         '9': 0, '10': 0, '11': 0, '12': 0, '13': 0, '14': 0, '15': 0,
+                         '16': 0, '17': 0, '18': 0, '19': 0, '20': 0}
 
     for i in range(len(data['data'])):
         if 'jobDescriptionVersion' in data['data'][i]:
@@ -203,7 +204,7 @@ def uni_num_job_pos():
     print("4. Τύποι θέσης: \n" + get_type_info(find_org_code(un3)) + "\n")
     print("4. Eργασιακή σχέση: \n" + get_employmentType_num(find_org_code(un3)) + "\n")
     print("4. Κατηγορία εκπαίδευσης: \n" + get_educationType_num(find_org_code(un3)) + "\n")
-    print("4. Κλάδοι ΠΑΝΕΠΙΣΤΗΜΙΟ ΠΑΤΡΩΝ: " + str(get_departments(find_org_code(un3))) + "\n")
+    print("4. Κλάδοι ΠΑΝΕΠΙΣΤΗΜΙΟ ΠΑΤΡΩΝ: " + str(get_departments(find_org_code(un3)))+ "\n")
 
 
 
