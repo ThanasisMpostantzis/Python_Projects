@@ -99,15 +99,15 @@ def get_educationType_num(orgcode):
 def get_departments(orgcode):
     endpoint = "positions?organizationCode=" + str(orgcode)
     data = main_request(baseurl, endpoint)
-    departments_count = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0,
-                         '9': 0, '10': 0, '11': 0, '12': 0, '13': 0, '14': 0, '15': 0,
-                         '16': 0, '17': 0, '18': 0, '19': 0, '20': 0}
+    departments_count = {}
 
     for i in range(len(data['data'])):
-        if 'jobDescriptionVersion' in data['data'][i]:
-            version = str(data['data'][i]['jobDescriptionVersion'])
-            if version[:20] in departments_count:
-                departments_count[version[:20]] += 1
+        if 'professionCategory' in data['data'][i]:
+            version = str(data['data'][i]['professionCategory'])
+            if version not in departments_count:
+                departments_count[version] = 1
+            else:
+                departments_count[version] += 1
 
     return departments_count
 
@@ -218,11 +218,11 @@ def org_units():
 find_code()
 change_theme_event()
 
-# 2
+#2
 staff_variation()
 change_theme_event()
 
-# 3
+#3
 annual_retreatments()
 change_theme_event()
 
