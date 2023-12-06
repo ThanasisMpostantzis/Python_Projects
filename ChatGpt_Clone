@@ -1,0 +1,47 @@
+import tkinter as tk
+from tkinter import scrolledtext, simpledialog
+import openai
+
+openai.api_key = 'ENTER_OPENAI_API_KEY_HERE'
+
+class ChatBoxApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Ai ChatBot")
+
+        self.chat_history = scrolledtext.ScrolledText(root, width=60, height=14, wrap=tk.WORD)
+        self.chat_history.grid(row=0, column=0, padx=10, pady=10, columnspan=3)
+
+        self.message_entry = tk.Entry(root, width=65)
+        self.message_entry.grid(row=1, column=0, padx=10, pady=10, columnspan=2)
+
+        self.send_button = tk.Button(root, text="Send", command=self.send_message)
+        self.send_button.grid(row=1, column=2, padx=10, pady=10)
+
+    def send_message(self):
+        user_message = self.message_entry.get()
+        self.chat_history.insert(tk.END, "You: " + user_message + "\n")
+        self.message_entry.delete(0, tk.END)
+
+        # Get responses
+        response = self.get_chatgpt_response(user_message)
+        self.chat_history.insert(tk.END, "Ai ChatBot: " + response + "\n")
+
+    def get_chatgpt_response(self, user_message):
+            # openai Api call
+            response = openai.Completion.create(
+              engine="text-davinci-003",
+              prompt=user_message,
+              temperature=0.7,
+              max_tokens=150
+            )
+            return response.choices[0].text.strip()
+
+width = 600
+height = 400
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = ChatBoxApp(root)
+    root.geometry(f"{width}x{height}")
+    root.mainloop()
