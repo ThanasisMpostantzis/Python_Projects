@@ -3,7 +3,7 @@ from collections import deque
 import heapq
 
 def bestfs(initial_value, target_value):
-    heap = [(0, initial_value, [])]
+    heap = [(0, initial_value, [])] 
     visited = set()
 
     while heap:
